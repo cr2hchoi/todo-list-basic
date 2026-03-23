@@ -1,0 +1,45 @@
+<div class="row mb-3">
+  <div class="col">
+    <div class="input-group">
+      <input
+        id="msg"
+        type="text"
+        class="form-control"
+        name="msg"
+        placeholder="할 일을 입력해주세요!!"
+        v-model.trim="todo"
+        @keyup.enter="addTodo"
+      /><!-- enter쳤을 때 addTodo 호출  -->
+      <span class="btn btn-primary input-group-addon" @click="addTodo">
+        <!-- 버튼 눌렀을 때 addTodo 호출  -->
+        추가</span
+      >
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <ul class="list-group">
+      <li
+        v-for="todoitem in todolist"
+        :key="todoitem.id"
+        class="list-group-item"
+        :class="{'list-group-item-success': todoitem.completed}"
+        @click="toggleCompleted(todoitem.id)"
+      >
+        <!-- 이벤트 핸들러에 함수(객체)전달 -->
+        <span class="pointer" :class="{'todo-done': todoitem.completed}">
+          {{todoitem.todo}}{{todoitem.completed ? "(완료)":""}}</span
+        >
+        <span
+          class="float-end badge bg-secondary pointer"
+          @click.stop="deleteTodo(todoitem.id)"
+          >삭제</span
+        >
+        <!-- 버블링 유의 : stop 필수 -->
+      </li>
+    </ul>
+  </div>
+          </div>
+        </div> </div> </div>

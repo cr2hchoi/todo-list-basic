@@ -39,12 +39,14 @@
     </style>
   </head>
   <body>
+    <script src="https://unpkg.com/vue@3"></script>
     <div id="app" class="container">
       <div class="card card-body bg-light">
         <div class="title">::Todolist App</div>
       </div>
       <div id="card card-default card-borderless">
         <div class="card-body">
+          <!-- 목록 디자인 및 템플릿 영역 -->
           <div class="row mb-3">
             <div class="col">
               <div class="input-group">
@@ -54,8 +56,16 @@
                   class="form-control"
                   name="msg"
                   placeholder="할 일을 입력해주세요!!"
-                />
-                <span class="btn btn-primary input-group-addon">추가</span>
+                  v-model.trim="todo"
+                  @keyup.enter="addTodo"
+                /><!-- enter쳤을 때 addTodo 호출  -->
+                <span
+                  class="btn btn-primary input-group-addon"
+                  @click="addTodo"
+                >
+                  <!-- 버튼 눌렀을 때 addTodo 호출  -->
+                  추가</span
+                >
               </div>
             </div>
           </div>
@@ -63,17 +73,26 @@
           <div class="row">
             <div class="col">
               <ul class="list-group">
-                <li class="list-group-item list-group-item-success">
-                  <span class="todo-done pointer">할일1 (완료)</span>
-                  <span class="float-end badge bg-secondary pointer">삭제</span>
-                </li>
-                <li class="list-group-item">
-                  <span class="pointer">할일2</span>
-                  <span class="float-end badge bg-secondary pointer">삭제</span>
-                </li>
-                <li class="list-group-item">
-                  <span class="pointer">할일3</span>
-                  <span class="float-end badge bg-secondary pointer">삭제</span>
+                <li
+                  v-for="todoitem in todolist"
+                  :key="todoitem.id"
+                  class="list-group-item"
+                  :class="{'list-group-item-success': todoitem.completed}"
+                  @click="toggleCompleted(todoitem.id)"
+                >
+                  <!-- 이벤트 핸들러에 함수(객체)전달 -->
+                  <span
+                    class="pointer"
+                    :class="{'todo-done': todoitem.completed}"
+                  >
+                    {{todoitem.todo}}{{todoitem.completed ? "(완료)":""}}</span
+                  >
+                  <span
+                    class="float-end badge bg-secondary pointer"
+                    @click.stop="deleteTodo(todoitem.id)"
+                    >삭제</span
+                  >
+                  <!-- 버블링 유의 : stop 필수 -->
                 </li>
               </ul>
             </div>
@@ -81,6 +100,8 @@
         </div>
       </div>
     </div>
+
+    <!-- script 영역 -->
     <script type="text/javascript">
       var ts = new Date().getTime(); //ts:전역변수로 현재시간 측정해서 변수로 집어넣음(timestamp)
       var vm = Vue.createApp({
