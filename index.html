@@ -17,6 +17,11 @@
       .title {
         text-align: center;
         font-weight: bold;
+        font-size: 25px;
+      }
+      .card.card-body.bg-light {
+        margin-top: 10px;
+        margin-bottom: 20px;
       }
       .todo-done {
         text-decoration: line-through;
@@ -40,7 +45,39 @@
       </div>
       <div id="card card-default card-borderless">
         <div class="card-body">
-          <!--목록 코드 넣을 공간 -->
+          <div class="row mb-3">
+            <div class="col">
+              <div class="input-group">
+                <input
+                  id="msg"
+                  type="text"
+                  class="form-control"
+                  name="msg"
+                  placeholder="할 일을 입력해주세요!!"
+                />
+                <span class="btn btn-primary input-group-addon">추가</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-success">
+                  <span class="todo-done pointer">할일1 (완료)</span>
+                  <span class="float-end badge bg-secondary pointer">삭제</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="pointer">할일2</span>
+                  <span class="float-end badge bg-secondary pointer">삭제</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="pointer">할일3</span>
+                  <span class="float-end badge bg-secondary pointer">삭제</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
