@@ -1,0 +1,46 @@
+<script type="text/javascript">
+  var ts = new Date().getTime(); //ts:전역변수로 현재시간 측정해서 변수로 집어넣음(timestamp)
+  var vm = Vue.createApp({
+    name: 'App',
+    data() {
+      return {
+        todo: '',
+        todolist: [
+          { id: ts, todo: '자전거 타기', completed: false },
+          { id: ts + 1, todo: '방정리 하기', completed: false },
+          { id: ts + 2, todo: 'vue 공부하기', completed: false },
+          { id: ts + 3, todo: '데이트 하기', completed: false },
+        ],
+      };
+    },
+
+    methods: {
+      //함수 정의
+      addTodo() {
+        //할일 추가 함수
+        if (this.todo.length >= 2) {
+          this.todolist.push({
+            //push:배열 끝에 항목 추가
+            id: new Date().getTime(),
+            todo: this.todo,
+            completed: false,
+          });
+          this.todo = '';
+          //this를 꼭 써줘야함
+          // 빈 항목을 기본값으로 넣어줘야 항목을 추가했을 때 바로 반영됨 (근데 vue는 바로 반영되니까 ㄱㅊ)
+        }
+      },
+      deleteTodo(id) {
+        //할일 삭제함수
+        let index = this.todolist.findIndex((item) => id === item.id); //findIndex : 인덱스 번호 찾아서 리턴하는 함수
+        this.todolist.splice(index, 1); //배열중간 삭제(index번호, 삭제 갯수)
+      },
+      toggleCompleted(id) {
+        //상태변경함수
+        let index = this.todolist.findIndex((item) => id === item.id);
+        this.todolist[index].completed = !this.todolist[index].completed;
+      },
+      //배열 proxy에 의해 연산통한 접근에 반응하도록 만듦(vue에만 있는 기능)
+    },
+  }).mount('#app');
+</script>

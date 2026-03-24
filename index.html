@@ -17,6 +17,11 @@
       .title {
         text-align: center;
         font-weight: bold;
+        font-size: 25px;
+      }
+      .card.card-body.bg-light {
+        margin-top: 10px;
+        margin-bottom: 20px;
       }
       .todo-done {
         text-decoration: line-through;
@@ -34,18 +39,114 @@
     </style>
   </head>
   <body>
+    <script src="https://unpkg.com/vue@3"></script>
     <div id="app" class="container">
       <div class="card card-body bg-light">
         <div class="title">::Todolist App</div>
       </div>
       <div id="card card-default card-borderless">
         <div class="card-body">
-          <!--목록 코드 넣을 공간 -->
+          <!-- 목록 디자인 및 템플릿 영역 -->
+          <div class="row mb-3">
+            <div class="col">
+              <div class="input-group">
+                <input
+                  id="msg"
+                  type="text"
+                  class="form-control"
+                  name="msg"
+                  placeholder="할 일을 입력해주세요!!"
+                  v-model.trim="todo"
+                  @keyup.enter="addTodo"
+                /><!-- enter쳤을 때 addTodo 호출  -->
+                <span
+                  class="btn btn-primary input-group-addon"
+                  @click="addTodo"
+                >
+                  <!-- 버튼 눌렀을 때 addTodo 호출  -->
+                  추가</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <ul class="list-group">
+                <li
+                  v-for="todoitem in todolist"
+                  :key="todoitem.id"
+                  class="list-group-item"
+                  :class="{'list-group-item-success': todoitem.completed}"
+                  @click="toggleCompleted(todoitem.id)"
+                >
+                  <!-- 이벤트 핸들러에 함수(객체)전달 -->
+                  <span
+                    class="pointer"
+                    :class="{'todo-done': todoitem.completed}"
+                  >
+                    {{todoitem.todo}}{{todoitem.completed ? "(완료)":""}}</span
+                  >
+                  <span
+                    class="float-end badge bg-secondary pointer"
+                    @click.stop="deleteTodo(todoitem.id)"
+                    >삭제</span
+                  >
+                  <!-- 버블링 유의 : stop 필수 -->
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="https://unpkg.com/vue">
-      //script 코드 들어갈 공간
+
+    <!-- script 영역 -->
+    <script type="text/javascript">
+      var ts = new Date().getTime(); //ts:전역변수로 현재시간 측정해서 변수로 집어넣음(timestamp)
+      var vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return {
+            todo: '',
+            todolist: [
+              { id: ts, todo: '자전거 타기', completed: false },
+              { id: ts + 1, todo: '방정리 하기', completed: false },
+              { id: ts + 2, todo: 'vue 공부하기', completed: false },
+              { id: ts + 3, todo: '데이트 하기', completed: false },
+            ],
+          };
+        },
+
+        methods: {
+          //함수 정의
+          addTodo() {
+            //할일 추가 함수
+            if (this.todo.length >= 2) {
+              this.todolist.push({
+                //push:배열 끝에 항목 추가
+                id: new Date().getTime(),
+                todo: this.todo,
+                completed: false,
+              });
+              this.todo = '';
+              //this를 꼭 써줘야함
+              // 빈 항목을 기본값으로 넣어줘야 항목을 추가했을 때 바로 반영됨 (근데 vue는 바로 반영되니까 ㄱㅊ)
+            }
+          },
+          deleteTodo(id) {
+            //할일 삭제함수
+            let index = this.todolist.findIndex((item) => id === item.id); //findIndex : 인덱스 번호 찾아서 리턴하는 함수
+            this.todolist.splice(index, 1); //배열중간 삭제(index번호, 삭제 갯수)
+          },
+          toggleCompleted(id) {
+            //상태변경함수
+            let index = this.todolist.findIndex((item) => id === item.id);
+            this.todolist[index].completed = !this.todolist[index].completed;
+          },
+          //배열 proxy에 의해 연산통한 접근에 반응하도록 만듦(vue에만 있는 기능)
+        },
+      }).mount('#app');
     </script>
   </body>
 </html>
