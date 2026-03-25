@@ -7,7 +7,7 @@ import TodoInput from '@/components/TodoInput.vue';
 export default {
   //vue2 방식 무슨 무슨 API라 함
   name: 'App',
-  components: { InputTodo, TodoList }, //불러올 컴포넌트들
+  components: { TodoInput, TodoList }, //불러올 컴포넌트들
   setup() {
     const ts = new Date().getTime();
     const state = reactive({ todoList: [] });

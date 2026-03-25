@@ -15,8 +15,8 @@ const emit = defineEmits(['delete-todo', 'toggle-completed']);
           v-for="todoItem in todoList"
           :key="todoItem.id"
           :todoItem="todoItem"
-          @delete-todo="$emit('delete-todo', todoItem.id)"
-          @toggle-completed="$emit('toggle-compled', todoItem.id)"
+          @delete-todo="emit('delete-todo', todoItem.id)"
+          @toggle-completed="emit('toggle-compled', todoItem.id)"
         />
       </ul>
     </div>
